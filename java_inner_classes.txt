@@ -1,0 +1,428 @@
+Inner Class:-
+Some times we can declare a class inside anaother class such type of classes are called inner classes. 
+
+After java 1.0v 1995   
+
+Inner classess concept introduced in 1.1 version to fix GUI bugs as a part of event handling but because of powerfull
+features and benefits of inner classes slowly programmers started using in regular coding also.
+
+Without existing one type of object if there is no chance of existing anaother type of object then we should go for inner classes.
+
+Ex1:-
+class University  //OUTER CLASS
+{
+	class Department   //INNER CLASS
+	{
+		// DEPARTMENT CANNOT EXIST IF THERE IS NO UNIVERSITY...SO HERE WE USE INNER CLASS.
+	}
+}
+
+EX2:-
+
+class Car
+{
+	class Engine
+	{
+		//if car object does not exists then engine class cannot exists so we use inner class as engine 
+	}
+}
+
+Ex-3:-
+
+Map in java collections is a grp of key value pair where each key value pair is called entry.
+
+interface Map //outer interface
+{
+	interface Entry  // inner interface
+	{
+		// entry depends on map so interface entry is defined inside interface map.
+	}
+}
+
+Note: 1 - WITHOUT EXISTING OUTER CLASS OBJECT THERE IS NO CHANCE OF EXISTING INNER CLASS OBJECT.
+      2 - THE RELATION BETWEEN OUTER AND INNER CLASS IS NOT "IS A" RELATION AND IT IS "HAS A" RELATIONSHIP (cOMPOSITION AND AGGREGATION).
+
+TYPES OF INNER CLASSES:= Based on position of declaration and behavior there are 4 categories.
+
+1. normal or regular inner class - if we are declaring any named class directly inside a class without static modifier such type of inner class is called
+normal or regular inner class.
+2. methid local inner classes -  declared inside a method. 
+3. Anonymous inner classes - without name 
+4. static nested classes -    
+
+note:- for every class in java - (.class) file is generated 
+for outer class (outer.class) and for inner (Outer$Inner.class) is generated.
+jar files contains .class files and inner class is also there with $ sign.
+if we run class file without main() runtime exception error: NoSuchMethodError:main
+
+class outer
+{
+	class inner
+	{
+
+	}
+	public static void main(String[] args)
+	{
+		sopln("outer class main method");
+	}	
+}
+
+o/p:-
+java outer -> outer class main method.
+
+java outer$inner -> RE- NoSuchMethodError:main
+
+
+class outer
+{
+	class inner
+	{
+		public static void main(String[] args)
+		{
+			sopln("inner class main method");
+		}
+	}
+}
+
+o/p:- Compile time error :- "inner class cannot have static declarations"  hence we cant't declare main method and cant run inner class directly 
+from command prompt.
+
+class outer 
+{
+	class Inner
+	{	
+		sopln("inner class method...");
+	}
+	psvm(String[] args)
+	{
+ 
+	}
+}
+
+
+case1:-accessing inner class code from static area of outer class or outside of outer class:
+
+class outer 
+{
+	class Inner
+	{	
+		public void m1()
+		{
+			sopln("inner class method...");
+		}
+	}
+	psvm(String[] args)
+	{
+		outer o = new outer();          // outer.inner i = new outer().new inner();
+		outer.inner i = o.new inner();
+		i.m1(); 
+	}
+}
+
+case 2:ACCESSING INNER CLASS CODE FROM INSTANCE AREA OF OUTER CLASS :
+
+class outer
+{
+	class inner
+	{
+		public void m1()
+		{
+			sopln("inner class method...");
+		}
+	}
+	public void m2()
+	{
+		inner i = new inner();
+	}
+	psvm(String[] args)
+	{
+		outer o = new outer();
+		o.m2();
+	}
+}
+
+case 3:-accessing inner class code from outside of outer class.
+
+
+class outer
+{
+	class inner
+	{
+		public void m1()
+		{
+			sopln("inner class method...");
+		}
+	}
+}
+
+class test
+{
+	psvm(String[] args)
+	{
+		outer o = new outer();
+		outer inner i = o.new inner();
+		i.m1();
+	}
+}
+
+Note:- From inner class we can access all members of outer class (both static and nonstatic,
+       private and non private methods and variables) directly.
+
+Example:
+class Outer
+{
+	int x=10;	
+	static	int y=20;
+	class Inner
+	{
+		public void methodOne()
+		{
+			System.out.println(x);//10
+			System.out.println(y);//20
+		}
+	}
+	public static void main(String[] args)
+	{
+		new Outer().new Inner().methodOne();
+	}
+}
+
+
+Within the inner class "this" always refers current inner class object. To refer
+current outer class object we have to use "outer class name.this".
+
+
+note - Within the inner class "this" always refers current inner class object. To refer
+current outer class object we have to use "outer class name.this".
+Example:
+class Outer
+{
+	int x=10;
+	class Inner
+	{
+		int x=100;
+		public void m1()
+		{
+			int x=1000;
+			System.out.println(x);//1000
+			System.out.println(this.x);//100
+			System.out.println(Outer.this.x);//10
+		}
+	}
+	public static void main(String[] args)
+	{
+		new Outer().new Inner().m1();
+	}
+}
+
+
+Nesting of inner class:-
+
+when can do nesting unlimited no of times.
+
+ex-
+
+class A
+{
+	class B
+	{
+		class C
+		{
+			public void m1()
+			{
+				sopln("innermost class method");
+			}
+		}
+	}
+
+}
+
+class Test
+{
+	psvm(String[] args)
+	{
+		A a = new A();
+		A.B b = a.new B();
+		A.B.C c = b.new C();
+		c.m1();
+	}
+} 
+
+2) Method local inner class:- 
+
+sometimes we can declare a inner classes inside a method such type of inner classes are called method local inner classes.
+
+NOTE:- Nested method concept is not allowed in java.
+Anonymous inner class are most used inner classes.
+
+Purpose of method local inner class:-
+
+->The main purpose of method local inner calss is to define method specific repeteadly required functionality.
+->Method local inner classes are best suitable to meet the nested method requirement.
+
+we can access method local inner classes only within a method were we declared outside of the method we cant access.because of its less 
+scope method local inner classes are most rarely used type of inner classes.
+
+class Test
+{
+	public void m1()
+	{
+		class inner
+		{
+			public void sum(int x, int y)
+			{
+				sopln("Sum:-"+(x+y));
+			}
+		}
+		inner i = new inner();
+		i.sum(10,20);
+			.
+			.
+		i.sum(100,200);
+			.
+			.
+		sum(1000,2000);
+	}
+	psvm(String[] args)
+	{
+		Test t = new Test();
+		t.m1;
+	}
+}
+
+
+We can declare method local inner class inside both the instance and static methods.
+
+If we declare inner class directly inside a instance methd then from that method local inner class we can access both static and 
+non static members of outer class directly. if we declare inner class inside static method then we can access only static members
+of ouer class directly from that method local inner class.
+
+class Test
+{
+	int x=10;
+	static int y=10;
+	public void m1()
+	{
+		class inner
+		{
+			public void m1()
+			{
+				sopln(x); ---------- (1)
+				sopln(y);
+			}
+		}
+		inner i = new inner();
+		i.m2();
+	}
+	psvm()
+	{
+		Test t = new Test();
+		t.m1();
+	}
+}
+
+if we declare the m1 method as static then at line 1 we will get compile time error saying non static variable x cannot be referenced
+from a static context.
+
+class Test
+{
+	public void m1()
+	{
+		int x=10;
+		class inner
+		{
+			public void m2()
+			{
+				sopln(x);
+			}
+
+		}
+		inner i = new inner();
+		i.m2();
+	}
+	psvm(String[] args)
+	{
+		Test t = new Test();
+		t.m1();
+	}
+}
+
+CE:- local variable x is accessed from within inner class; needs to be declared final
+
+NOTE:- From method local inner class we cant access local variables of the methods in which we declare the inner class
+if the local variable declared as final then we can access.If we declare x as final then we wont get any compile time error.
+
+Local variable are stored in stack and object are stored in heap memory area and final will be replaced by value at compile time only.
+	
+class Test
+{
+	int i=10;
+	static int j=10;
+	public void m1()
+	{
+		int k = 10;
+		final int m=40;
+		class inner
+		{
+			public void m2()
+			{
+				line 1;
+			}
+		}
+	}
+}
+
+Q1. consider the following code which of the following variable we can access directly?
+(i,j,k,m)
+
+Ans - i,j,m only
+
+Q2. if we declare m1 method as static then at line 1 which variables we can access directly?
+
+Ans- j,m only
+
+Q3. If we declare m2 method as static then at line 1 which variable we can access directly?
+
+Ans - CE-> inside inner class we cannot declare static members.
+
+NOTE:- The only applicable modifier that can only be used for method local inner classes are final, abstract and strictfp else gives CE.
+
+
+
+ANONYMOUS INNER CLASSES:-
+
+Sometimes we can declare Inner class without name such type of inner classes are called Anonymous inner classes.
+
+There are two anonymous character in java - 1) anonymous array and 2) anonymous inner class
+
+-> The main purpose of anonymous inner classes is just for instant use (one time usage).
+
+Based on declaration and behavior there are three types o anonymous inner classes:-
+1) anonymous inner class that extends a class  2) anonymous that implements as interface 3) defined inside arguments.
+
+Anonymous inner class that extends a class:-
+
+ 
+
+
+
+ 
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+			
+
+
+
+
