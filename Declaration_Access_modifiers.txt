@@ -1,0 +1,637 @@
+Declarations and Access modifiers:-
+-------------------------------------
+1) Java source file structure 
+2) Class level modifiers
+3) Member level modifiers
+4) Interfaces
+
+JAVA SOURCE FILE STRUCTURE:-
+--------------------------------
+A java program can contain any nuumber of classes but atmost one class can be declared as public if there is a public class then name of 
+the program and name of public class must be matched otherwise we will get compile time error.
+
+---------------
+class A
+{
+}
+class B
+{
+}
+class C
+{
+}
+
+-------------
+-> if there is no public class then we can use any name and there are no restrictions.
+-> if class B is public then name of program should be B.java otherwise we will get CE-class B is public, should be declared in a file 
+named B.java.
+
+-> if class B and class C is declared as public and the name of the program is B.java then it will give CE- class C is public, should be declared 
+in a file named C.java.
+
+class A
+{
+	psvm(String[] args)
+	{
+		sopln("A class main");
+	}
+}
+
+class B
+{
+	psvm(String[] args)
+	{
+		sopln("B class main");
+	}
+}
+
+class C
+{
+	psvm(String[] args)
+	{
+		sopln("C class main");
+	}
+}
+
+Class D
+{
+}
+
+
+----Conclusions:-
+1) whenever we are compileing a java program for every class present in the program a seperate .class file will be generated.
+2) we can compile a java program(java sources file) but we can run a java .class file.
+3) whenever we are executing a java class the corresponding class main method will be executed.
+4) If the class doesnt contains main method then we will get runntime exception saying no such method error:main.
+5) If the corresponding .class not available then we will get runtime exception saying no class def found error.
+6) It is not recommended to declare multiple classes in a single source file 
+7) It is highly recommended to declare only one class per source file. and name of the program we have to keep same as the class name.
+8) The main advntage of this approach is to readability and maintainibility of code will be improved.  
+
+
+Import Statement:-
+----------------------
+class Test
+{
+	psvm(String[] args)
+	{
+		ArrayList l = new ArrayList();
+	}
+} 
+
+CE- cannot find symbol
+
+we can solve this problem by using fully qualified name :- java.util.ArrayList l = new java.util.ArrayList 
+but it increases length of code and reduces readability.
+
+we can solve this problem by using "import" statement.
+whenever we are writing import statement it is not required to use fully qualified name everytime we can use short name directly.
+
+import java.util.ArrayList;
+class Test
+{
+	psvm(String[] args)
+	{
+		ArrayList l = new ArrayList();
+	}
+} 
+
+//short Name - 
+hence import statement acts as best typing shortcut.
+
+case 1:- Types of import statement
+
+1)Explicit class import                     2) Implicit class import
+ ex- import java.util.ArrayList;             ex - import java.util.*;
+
+-> It IS HIGHLY RECOMMENDED TO USE EXPLICIT CLASS IMPORT BECAUSE IT IMPROVES READABILITY OF THE CODE.
+
+-> It is not recommended to use because it reduces readability of the code.
+
+Case 2:-
+---------
+
+class MyObject extends java.rmi.UnicastRemoteObject
+{
+
+}
+
+Case 3:- consider the following code 
+
+class MyObject extends java.rmi.UnicastRemoteObject
+{
+
+}
+
+//The code compiles fine even though we are not writing import statement because we used fully qualified name.
+
+case 4:-
+---------
+
+import java.util.*;
+import java.sql.*;
+
+class Test
+{
+	public static void main(String[] args)
+	{
+		Date d = new Date();
+	}
+}
+	 
+CE:- reference to Date is ambiguous
+
+Note:- Even in the case of list also we may get same ambiguity problem because it is available in both util and awt packages.
+
+case 5:-
+while resolving class name compiler gives the precedence in the following order:-
+
+1)Explicit class import
+2)classes present in cwd(current working directory(default package))
+3)Implicit class import
+
+import java.util.Date;
+import java.sql.*;
+
+class Test
+{
+	public static void main(String[] args)
+	{
+		Date d = new Date();
+		System.out.print(d.getClass().getName());
+	}
+}
+
+O/p:- Util package date got considered.
+
+Case 6:- 
+
+whenever we are importing a java package all classes and interfaces present in that package bydefault available but not the 
+subpackage classes if we want to use the sub package class compulsory we should write import statement until sub package level.
+
+java -> util-> regex-> pattern
+
+All classes and interfaces present in the following packages are bydefault available to every java program hence we are not required to write 
+import statement 1) java.lang and 2)default package  (cwd-current working directory) 
+
+Case 7:- import statement is totally compile time related concept more no of imports then more will be the compile time but there is no 
+on execution time(runtime).
+
+Case 9:- Difference between C language #include and java language import statement:-
+
+   In case of C language all I/O header files will e loaded at begining only (at translation time) hence it is static include
+   But in case of java import statement no .class file will be loaded at the begining whenever we use a particular class then only 
+   corresponding. class file will be loaded this is like dynamic include or load on demand or load on fly. 
+
+1.5V new features (for each loop , var-arg method, autoboxing and auto unboxing, covarient return type, Queue, Annotations, enum, static import)
+
+
+PACKAGES:-
+-----------
+
+It is an encapsulation mechanism to group related classes and interfaces into a single unit, which is nothing but package.
+Ex-1) - All classes and interfaces which are required fro database operations are grouped into a single package which is nothing but 
+java.sql package 
+
+Ex-2) -  All classes and interfaces which are useful for fileio operations are grouped into a seperate package which 
+is nothing but java.io package.
+
+Purpose of Package:-
+1) to resolve naming conflicts(i.e unique identification of our components)
+2) it improves modularity of the application ()
+3) it improves maintainabity of the application.
+4) it provides security for our components.
+
+Universally accepted naming convention for packages that is to use internet domain name in reverse .
+ex- com.axixbank.loan.housing.Account      (clients internet domain name in reverse, module name,sub module name, class name)
+
+package com.durgasoft.scjp;
+public class Test
+{
+	psvm(String[] args)
+	{
+		sopln("pkg demo");
+	}
+}
+
+javac test.java
+
+CWD->Test class (class file is generated in the current working directory)
+
+javac -d . Test.java       //(-d   ->   destination to place generated .class file)
+ 			   //(. -> CWD),(CWD -> com -> durgasoft -> scjp -> Test class)
+
+1) Generated .class will be placed in current working directory
+2)Generated .class file will be placed in corresponding package structure.
+
+Variations:-
+----------------
+i) if the correspnding package structure not already available then this cmd itself will create corresponding package structure.
+
+ii)As destination instead of . we can take any valid directory name EX:- javac -d F: Test.java //F: -> com -> durgasoft -> scjp ->Test class)
+
+iii) if the specified directory not already available then we will get compile time error Ex- javac -d z: Test.java // if Z: not available then 
+we will get compile time error saying "directory not found: z:".
+
+At the time of execution we need to use the fully qualified name :- java com.durgasoft.scjp.Test //we will get output as package demo.
+
+Conclusions:-
+-------------
+
+package pack1;
+package pack2;
+public class A
+{
+}
+
+1) In any java source file there can be atmost one package statement i.e more than one package statement is not allowed otherwise we will
+get CE:- clas, interface or enum expected
+
+import java.util.*;
+package pack1;
+public class A
+{
+}
+
+2) In any java program the first non common statement should be package statement (if it is available) otherwise we will get compile time error
+CE:-class, interface or enum expected.
+
+Note:- An empty java source file is also valid java program.(package - atmost one, import statements - any no.,class/interface/enum - any no) 
+
+
+The following is valid java source file structure :- ->package statements-> import statements-> class / interface /enum declaration and 
+this order is important.
+
+Class level Modifiers:-
+-----------------------
+
+whenever we are writing our own classes we have to provide some information about our class to the JVM like 1)whether this class can
+be accessible from anywhere or not 2) whether child class creation is possible or not 3) wheter object creation is possible or not etc
+we can specify this information by using appropriate modifier.
+
+modifiers-(public,private,default, protected, final,abstract, static, synchronized, native, strictfp, transient, volatile)
+The only applicable class modifier for top level class are:-public,default,final,abstract,strictfp.
+For inner classes modifiers are:- private, protected,static,public,default,final,abstract,strictfp.
+
+private class Test
+{
+	psvm(String[] args)
+	{
+		Sopln("hello");
+	}
+}
+
+CE-: modifier private not allowed here.
+
+private class A
+{
+}
+
+static class B
+{
+}
+
+psvm(String[]args)
+{
+	sopln("hello");
+}
+
+Access specifiers vs access modifiers:-
+----------------------------------------
+
+public private protected default are considered as specifiers except this remaining are considerd as modifiers but this rule is applicatble 
+only for old languages like cpp but not in java. In java all ara considered as modifiers only, there is no word like specifiers.
+
+public classes:-
+----------------
+
+If a class is declared as public then we can access that class from anywhere.  
+
+package pack1;
+public class A
+{
+	public void m1()
+	{
+		sopln("hello");
+	}
+}
+
+javac -d . A.java
+
+package pack2;
+import pack1.A;
+class B
+{
+	psvm(String[] args)
+	{
+		A a=new A();
+		a.m1();
+	}
+}
+
+javac -d . B.java
+java pack2.B
+
+O/P - hello
+
+if class A is not public then while compiling B class we will get CE- pack1.A is not public in pack1; cannot be accessed from outside package.
+
+Default classes:-
+------------------
+
+If a class is declared as default then we can access that class only within the current package i.e from outside package we can't access
+hence default access is also known as package level access.
+
+Final modifier:-
+-----------------
+
+Final is the modifier applicable for classes,methods and variables.
+
+1) Final method:-  
+
+Whatever method parent has bydefault available to the child through inheritence if the child is not satisfied with the parent method
+implementation then child is allowed to redefine that method based on its requirement this process is called overriding.
+
+if the parent class method is declared as final then we can't override that method in the child class because its implementation is final.
+
+class P
+{
+	public final/void property()
+	{
+		sopln("Gold,cash,Land");
+	}
+}
+public void marry()
+{
+	sopln("subbulakshmi");
+}
+}
+
+class c extends P
+{
+	public void marry()
+	{
+		sopln("Sammantha,Megha Akash...");
+	}
+}
+
+Note:- If a class is decalared as final we can't extend functionality of that class i.e we can't create child class for that class i.e
+inheritence is not possible  for final classes.
+
+CE:- cannot inherit from final P
+
+EX- final class P
+    {
+    }
+    
+    class C extends P
+	{}
+CE:- cannot inherit from final P
+
+Note :- Every method present inside a final class is always final bydefault but every variable present inside final class need not to be 
+final.
+
+Advantage and disadvantage of final class:-
+
+-> we can achieve security and we can provide unique implementation but the main disadvantage of final keyword is we are missing key
+benefits of OOPS : Inheritance(can't extend means cannot create child class) and polymorphism(cannot override) if there is no specific
+requirement then it is not good to use final keyword.
+
+Abstract Modifier:-
+--------------------
+
+-> abstract is a modifier applicable for classes and methods but not for variables.
+
+1)abstract method:- Even though we don't know about implementation still we can declare a method with abstract modifier i.e for abstract 
+method only declarartion is available but not implementation hence abstract method declarartion should end with ;
+
+EX- public abstract void m1();  - valid
+    public abstract void m1(){}   - invalid
+
+Child class is responsible for the implementation of the parent class abstract method.
+
+abstract class vehicle
+{
+	abstract public int getnoofwheels();
+}
+
+class bus extends vehicle 
+{
+	public int getnoof wheels()
+	{
+		return 7;
+	}
+}
+
+class auto extends vehicle
+{
+	public int getnoof wheels()
+	{
+		return 3;
+	}
+}
+
+-> By declaring abstract method in the parent class we can provide guidelines to the child classes such that which methods compulsory child 
+has to implement.
+
+-> abstract method --e-n-e-m-y-- final , native, syncronized, static , private, strictfp.(cannot be used together,CE-illegal combination
+of modifier abstract and final).
+
+-> abstract method never talks about implementation if any modifier talks about implementation then it forms illegal combination with abstract
+modifiers.
+
+EX- abstract final void m1();   //CE:- illegal combination of modifier
+
+2)abstract class:-
+------------------
+
+For any java class if we are not allowed to create an object (because of partial implementation)such type of class we have to declare with
+abstract modifier i.e for abstract classes instanciation is not possible.
+
+abstract class Test
+{
+	psvm(String[] args)
+	{
+		Test t = new Test();
+	}
+}
+
+CE:- Test is abstract cannot be instanciated.
+
+abstract class vs abstract method:-
+------------------------------------
+
+1) if a class contains atleast one abstract method then compulsory we should declare class as abstract otherwise we will get compile time error
+reason- if a class contains atleast one abstract method  then implementation is not complete and hence it is not recommended to create object
+to restrict object instanciation compulsory we should declare class as abstract.
+
+2) Even though class doesnt contain any abstract method still we can decalre class as abstract if we dont want instanciation i.e abstract 
+class can contain 0 number of abstract method also.
+
+Ex1- httpServlet class is abstract class but it doesnt contains any abstract method
+Ex2- Every adaptor class is recomended to declare as abstractbut it doesnt contain any abstract method .
+
+class P
+{
+	public void m1();
+}
+
+CE:- mising method body, or declare abstract
+
+class P
+{
+	public abstract void m1();
+}
+	
+CE:-  abstract methods cannot have a body.
+
+class P
+{
+	public abstract void m1();
+}
+
+CE:- P is not abstract and does not override abstract method m1() in P
+
+abstract class P
+{
+	public abstract void m1();
+}
+
+3) If we are extending abstract class then for each and every abstract method of parent class we should provide implementation otherwise
+we have to decalare child class as abstract.in this case next level child class is responsible to provide implementation.
+
+class P
+{
+	public abstract void m1();
+	public abstract void m1();
+
+}
+class C extends P
+{
+	public void m1(){}
+}
+
+CE:- C is not abstract and doesnt override abstract method m2() in P
+
+final vs abstract:-
+--------------------
+
+1)abstract methods compulsory we should override in the child classes to provide implementation whereas we cant override final methods
+ hence final - abstract combination is illegal combination for methods.
+
+2)for final classes we cant create child class whereas for abstract classes we should create child class to provide implementation hence
+final - abstract combination is illegal for classes.
+
+3) abstract class can contain final method whereas final class cant contain abstract method..
+EX- 
+abstract class Test
+{
+	public final void m1()
+	{  
+	}// valid
+}
+
+final class Test
+{
+	public abstract void m1()
+	{
+	}  // invalid
+}
+
+Note:- it is highly recommended to use abstract modifier because it promotes several OOP features like inheritance and polymorphism.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+My TCS interview experience for Ninja profile
+
+I'm defending myself in java , so in my TR round they ask like , why java is not pure object oriented language, concept of wrapper class in java, his to create object in java, what is constructor, what is the use of constructor, static keyword ,DDL,DML command, update command, and my project , and 2 logical questions related to programming like swapping of 2 number ,when we declare static variable
+
+And in my MR round they ask , project related questions like which technology I used how many members in my project, my role in my project, 2 situation based questions and short and long term goals, hobbies
+
+And in my HR round they ask , academic derails , school life achievement, prefered location , education gap and active backlo
+
+
+
+
+We both left home at 18.
+You cleared JEE,
+I got recommended.
+You got IIT,
+I got NDA.
+You pursued your degree,
+I had the toughest training.
+Your day started at 7 and ended at 5,
+Mine started at 4 till 9 and
+Some nights also included.
+You had your convocation ceremony,
+I had my POP.
+Best company took you and
+Best package was awarded,
+I was ordered to join my paltan
+With 2 stars piped on my shoulders.
+You got a job,
+I got a way of life.
+Every eve you got to see your family,
+I just wished I got to see my parents soon.
+You celebrated festivals with lights and music,
+I celebrated with my comrade in bunkers.
+We both married,
+Your wife got to see you every day,
+My wife just wished I was alive.
+You were sent to business trips,
+I was sent on line of control.
+We both returned,
+Both wives couldn't control their tears, but
+You wiped her but,
+I couldn't.
+You hugged her but,
+I couldn't.
+Because I was lying in the coffin,
+With medals on my chest and,
+Coffin wrapped with the tricolour.
+My way of life ended,
+Your continued.
+We both left home at 18.
